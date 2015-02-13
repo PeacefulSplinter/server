@@ -10,7 +10,7 @@ var User = require('./userModel.js');
 exports.setCookie = function (req, res){
 	console.log(req.body.username);
 	console.log(req.body.password);
-	res.cookie('u_id', 123); // Bread and butter, can modify anything else but make sure 2nd argument is the user's ID# from a database query.
+	res.cookie('u_id', user.Id); // Bread and butter, can modify anything else but make sure 2nd argument is the user's ID# from a database query.
 	res.redirect('/');
 };
 
@@ -20,6 +20,7 @@ exports.destroyCookie = function (req, res){
 	res.redirect('/');
 };
 
+<<<<<<< HEAD
 exports.signUpUser = function (req, res) {
   var username = req.body.username;
   var password = req.body.password;

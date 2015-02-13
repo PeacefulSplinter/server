@@ -46,6 +46,13 @@ UserSchema.methods.comparePassword = function(loginPassword, cb) {
 	});
 }
 
+// UserSchema.methods.generateHash = function(password) {
+// 	return bcrypt.hash(password, function(err, hash){
+// 		if (err) throw err;
+// 	});
+// }
+
+
 
 var User = mongoose.model('User', UserSchema);
 
