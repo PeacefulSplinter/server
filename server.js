@@ -26,6 +26,10 @@ app.get('/', function (req, res) {
   res.sendFile(__dirname + '/test.html');
 });
 
+app.get('/home', function(req, res){
+  res.sendFile(__dirname + '/home.html');
+});
+
 app.post('/login', UserCtrl.signInUser);
 app.post('/signup', UserCtrl.signUpUser);
 app.post('/logout', UserCtrl.destroyCookie);
