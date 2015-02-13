@@ -6,7 +6,7 @@ var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var Promise = require('bluebird');
 var User = require('./userModel.js');
-var bcrypt = require('bcrypt-nodejs');
+var bcrypt = require('bcrypt');
 
 exports.setCookie = function (req, res){
 	console.log(req.body.username);
@@ -30,17 +30,24 @@ exports.signUpUser = function (req, res) {
    if (user) {
      console.log('Username already exists');
      console.log(user);
-     res.redirect('/signin');
+     res.redirect('/');
    }
    if (!user) {
-     bcrypt.genSalt(10, function (error, result) {
-       bcrypt.hash(password, result, null, function (err, hash) {
+     bcrypt.genSalt(10, function (err, salt) {
+       console.log('made it thru salt: ' + salt);
+       bcrypt.hash(password, salt, function (err, result) {
+        if (err) {
+          console.log('error: ' + err);
+        }; 
+        console.log('made it to results: ' + result);
          var user_data = {
              username: username,
-             password: hash,
-             salt: result
+             password: result,
+             salt: salt
          };
+         console.log("\n" + user_data.password);
          var newName = new User(user_data);
+         console.log(newName);
          newName.save( function(error, data){
              if(error){
                  console.log('yikes');
@@ -49,7 +56,6 @@ exports.signUpUser = function (req, res) {
              else{
                  console.log('complete!');
                  console.log(data);
-                 res.json(data);
              }
          });
      });
@@ -58,22 +64,22 @@ exports.signUpUser = function (req, res) {
 })
 }
 
-exports.signInUser = function (req, res) {
-  var username = req.body.username;
-  var password = req.body.password;
-  User.findOne({ username: username }, function (err, user) {
-    if (err) {
-      console.log('user name doesnt exist'); // <-- This
-      return;
-    }
-    bcrypt.compare(password, user.password, function (err, result) {
-      if (result) {
-        console.log('yo');
-        res.redirect('/'); //Successful login, redirect to user home page
-      } else {
-        console.log('Password wrong!');
-        res.redirect('/'); // password incorrect, try again
-      }
-    });
-  });
-};
+// exports.signInUser = function (req, res) {
+//   var username = req.body.username;
+//   var password = req.body.password;
+//   User.findOne({ username: username }, function (err, user) {
+//     if (err) {
+//       console.log('user name doesnt exist'); // <-- This
+//       return;
+//     }
+//     bcrypt.compare(password, user.password, function (err, result) {
+//       if (result) {
+//         console.log('yo');
+//         res.redirect('/'); //Successful login, redirect to user home page
+//       } else {
+//         console.log('Password wrong!');
+//         res.redirect('/'); // password incorrect, try again
+//       }
+//     });
+//   });
+// };
