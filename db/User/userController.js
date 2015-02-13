@@ -23,7 +23,6 @@ exports.signUpUser = function (req, res) {
  var username = req.body.username;
  var password = req.body.password;
 
-
  User.findOne({ username: username }, function (err, user) {
    if (user) {
      console.log('Username already exists');
@@ -70,31 +69,28 @@ exports.signInUser = function (request, response) {
 
  User.find({ username: username }, function (err, user) {
   console.log(user);
-   if (user.length === 0) {
-     console.log('No user by this name');
-     response.redirect('/');
-   }
-   else if (user) {
-       bcrypt.hash(password, user[0].salt, function (err, hashedPassword) {
-        if (err) {
-          console.log('error: ' + err);
-          return;
-        };
-        bcrypt.compare(hashedPassword, user[0].password, function (err, res){
-          if (hashedPassword === user[0].password) {
-            console.log("password correct!!!");
-            response.cookie('u_id', user[0]._id);
-            response.redirect('/home');
-          } else {
-            console.log('compare not working');
-            response.redirect('/');
-            console.log('password incorrect');
-          }
-
-      });
- });
-
-};
-   
- });
+    if (user.length === 0) {
+      console.log('No user by this name');
+      response.redirect('/');
+    }
+    else if (user) {
+        bcrypt.hash(password, user[0].salt, function (err, hashedPassword) {
+          if (err) {
+            console.log('error: ' + err);
+            return;
+          };
+          bcrypt.compare(hashedPassword, user[0].password, function (err, res){
+            if (hashedPassword === user[0].password) {
+              console.log("password correct!!!");
+              response.cookie('u_id', user[0]._id);
+              response.redirect('/home');
+            } else {
+              console.log('compare not working');
+              response.redirect('/');
+              console.log('password incorrect');
+            }
+          });
+        });
+    };
+  });
 }
