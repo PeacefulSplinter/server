@@ -9,9 +9,7 @@ var User = require('./userModel.js');
 var bcrypt = require('bcrypt');
 
 exports.setCookie = function (req, res){
-	console.log(req.body.username);
-	console.log(req.body.password);
-	res.cookie('u_id', user.Id); // Bread and butter, can modify anything else but make sure 2nd argument is the user's ID# from a database query.
+	res.cookie('u_id', user._id);
 	res.redirect('/');
 };
 
@@ -56,66 +54,47 @@ exports.signUpUser = function (req, res) {
              else{
                  console.log('complete!');
                  console.log(data);
+                 res.redirect('/');
              }
          });
+         
      });
    });
  };
 });
 }
 
-exports.signInUser = function (req, res) {
-  var username = req.body.username;
-  var password = req.body.password;
+exports.signInUser = function (request, response) {
+  var username = request.body.username;
+  var password = request.body.password;
 
  User.find({ username: username }, function (err, user) {
-   if (!user) {
+  console.log(user);
+   if (user.length === 0) {
      console.log('No user by this name');
-     res.redirect('/signup');
+     response.redirect('/');
    }
-   if (user) {
-       bcrypt.hash(password, user[0].salt, function (err, result) {
-        console.log(password);
+   else if (user) {
+       bcrypt.hash(password, user[0].salt, function (err, hashedPassword) {
         if (err) {
           console.log('error: ' + err);
           return;
         };
-        bcrypt.compare(result, user[0].password, function (err, res){
-          console.log('Hashed value from client: ' + result);
-          console.log('Password stored by matched user: ' + user[0].password);
-
-          if (result) {
+        bcrypt.compare(hashedPassword, user[0].password, function (err, res){
+          if (hashedPassword === user[0].password) {
             console.log("password correct!!!");
+            response.cookie('u_id', user[0]._id);
+            response.redirect('/home');
           } else {
+            console.log('compare not working');
+            response.redirect('/');
             console.log('password incorrect');
           }
 
-   });
+      });
  });
+
 };
    
  });
 }
-
-
-
-//   var username = req.body.username;
-//   var password = req.body.password;
-//   User.find({ username: username }, function (err, user) {
-//     console.log('made it');
-//     console.log(user);
-//     if (err) {
-//       console.log('user name doesnt exist'); // <-- This
-//       return;
-//     }
-//     bcrypt.compare(password, user.password, function (err, result) {
-//       if (result) {
-//         console.log('yo');
-//         res.redirect('/'); //Successful login, redirect to user home page
-//       } else {
-//         console.log('Password wrong!');
-//         res.redirect('/'); // password incorrect, try again
-//       }
-//     });
-//   });
-// };
