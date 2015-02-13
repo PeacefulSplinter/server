@@ -26,7 +26,7 @@ app.get('/', function (req, res) {
   res.sendFile(__dirname + '/test.html');
 });
 
-//app.get('/login', UserCtrl.signInUser);
+app.post('/login', UserCtrl.signInUser);
 app.post('/signup', UserCtrl.signUpUser);
 app.post('/logout', UserCtrl.destroyCookie);
 app.listen(port, function(){

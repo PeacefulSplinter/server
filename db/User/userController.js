@@ -61,13 +61,49 @@ exports.signUpUser = function (req, res) {
      });
    });
  };
-})
+});
 }
 
-// exports.signInUser = function (req, res) {
+exports.signInUser = function (req, res) {
+  var username = req.body.username;
+  var password = req.body.password;
+
+ User.find({ username: username }, function (err, user) {
+   if (!user) {
+     console.log('No user by this name');
+     res.redirect('/signup');
+   }
+   if (user) {
+       bcrypt.hash(password, user[0].salt, function (err, result) {
+        console.log(password);
+        if (err) {
+          console.log('error: ' + err);
+          return;
+        };
+        bcrypt.compare(result, user[0].password, function (err, res){
+          console.log('Hashed value from client: ' + result);
+          console.log('Password stored by matched user: ' + user[0].password);
+
+          if (result) {
+            console.log("password correct!!!");
+          } else {
+            console.log('password incorrect');
+          }
+
+   });
+ });
+};
+   
+ });
+}
+
+
+
 //   var username = req.body.username;
 //   var password = req.body.password;
-//   User.findOne({ username: username }, function (err, user) {
+//   User.find({ username: username }, function (err, user) {
+//     console.log('made it');
+//     console.log(user);
 //     if (err) {
 //       console.log('user name doesnt exist'); // <-- This
 //       return;
