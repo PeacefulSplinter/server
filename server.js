@@ -22,7 +22,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(session({secret: 'shhhh', saveUninitialized: true, resave: true}));
 
-
 app.get('/', function (req, res) {
   res.sendFile(__dirname + '/test.html');
 });
