@@ -14,7 +14,12 @@ var UserSchema = new Schema({
 	password: {
 		type: String,
 		required: true
+	},
+	salt: {
+		type: String,
+		required: true
 	}
+
 
 });
 
@@ -45,6 +50,13 @@ UserSchema.methods.comparePassword = function(loginPassword, cb) {
 		cb(null, isMatch);
 	});
 }
+
+// UserSchema.methods.generateHash = function(password) {
+// 	return bcrypt.hash(password, function(err, hash){
+// 		if (err) throw err;
+// 	});
+// }
+
 
 
 var User = mongoose.model('User', UserSchema);
