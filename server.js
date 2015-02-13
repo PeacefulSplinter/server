@@ -11,14 +11,12 @@ var mongoose = require('mongoose');
 var User = require('./db/User/userModel.js');
 var UserCtrl = require('./db/User/userController');
 
-
 var port = process.env.PORT || 3000;
 var host = process.env.host || '127.0.0.1';
 
 mongoose.connect('mongodb://' + host + '/peacefulSplinter');
 var db = mongoose.connection;
 
-// mongoose.connect('mongodb://' + host + '/peacefulSplinter');
 app.use(express.static(__dirname + '/../client'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
