@@ -5,7 +5,8 @@
 			<input type='text' name='randomData'>
 		</form>
 		<a href="/auth/provider">Log In</a> -->
-		<form action="/" method="post">
+		<form action="/signin" method="get">
+			Log into Account
 	    	<div>
 		        <label>Username:</label>
 		        <input type="text" name="username"/>
@@ -19,9 +20,24 @@
     		</div>
 		</form>
 		<hr>
-		<form action='/test' method='post'>
+		<form action='/logout' method='post'>
 			<input type="submit" value="Log Out"/>
 		</form>
+		<form action='/signup' method='post'>
+			Create Profile
+	    	<div>
+		        <label>Username:</label>
+		        <input type="text" name="username"/>
+	    	</div>
+	    	<div>
+		        <label>Password:</label>
+		        <input type="password" name="password"/>
+	    	</div>
+	    	 <div>
+        		<input type="submit" value="Log In"/>
+    		</div>
+		</form>
+
 	</body>
 </html>
 

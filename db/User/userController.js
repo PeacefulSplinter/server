@@ -4,6 +4,8 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
+var Promise = require('bluebird');
+var User = require('./userModel.js');
 
 exports.setCookie = function (req, res){
 	console.log(req.body.username);
@@ -18,25 +20,57 @@ exports.destroyCookie = function (req, res){
 	res.redirect('/');
 };
 
-passport.use(new LocalStrategy(function(username, password, done){
-    User.findOne({username: username}, function(err, user){
+exports.signUpUser = function (req, res) {
+  var username = req.body.username;
+  var password = req.body.password;
 
-        if (err) {
-          return done(err);
-        } 
-        // if username not in database
-        if (!user) {
-          return done(null, false, {message: 'username not found!!!'});
-        }
-        // compare both passwords
-        user.comparePassword(password, function(err, isMatch){
-            if (err) return done(err);
-            if (isMatch) {
-              res.cookie('u_id', user._id);
-              return done(null, user);
-            } else {
-              return done(null, false, {message: "invalid password"});
-            }
+
+  User.findOne({ username: username }, function (err, user) {
+    if (user) {
+      console.log('Username already exists');
+      console.log(user);
+      res.redirect('/signin');
+    }
+    if (!user) {
+      bcrypt.genSalt(10, function (error, result) {
+        bcrypt.hash(password, result, null, function (err, hash) {
+          User.save({
+              username: username,
+              salt: result,
+              password: hash
+            }, function (err, user) {
+              if (!!err) {
+                console.log('An error occurred while creating the user in the database');
+              } else {
+                console.log('user creation Successful');
+                console.log(user._id);
+                console.log(user.id);
+                res.cookie('u_id', user._id);
+                res.redirect('/');
+              }
+            });
         });
+      });
+    }
+  });
+};
+
+exports.signInUser = function (req, res) {
+  var username = req.body.username;
+  var password = req.body.password;
+  User.findOne({ username: username }, function (err, user) {
+    if (err) {
+      console.log('user name doesnt exist'); // <-- This
+      return;
+    }
+    bcrypt.compare(password, user.password, function (err, result) {
+      if (result) {
+        res.cookie('u_id', user.id);
+        res.redirect('/'); //Successful login, redirect to user home page
+      } else {
+        console.log('Password wrong!');
+        res.redirect('/signup'); // password incorrect, try again
+      }
     });
-}));
+  });
+};
