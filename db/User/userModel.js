@@ -5,6 +5,7 @@ var bcrypt = require('bcrypt-nodejs');
 
 var Schema = mongoose.Schema;
 
+// set up our user schema 
 var UserSchema = new Schema({
 
 	username: { 
@@ -19,6 +20,7 @@ var UserSchema = new Schema({
 
 });
 
+// before saving our user to DB
 UserSchema.pre('save', function(next){
 	// this - object that contains username and password
 	var user = this;
@@ -45,6 +47,7 @@ UserSchema.methods.comparePassword = function(loginPassword, cb) {
 		cb(null, isMatch);
 	});
 }
+
 
 var User = mongoose.model('User', UserSchema);
 

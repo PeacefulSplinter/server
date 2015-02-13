@@ -4,7 +4,8 @@ var bodyParser = require('body-parser');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var session = require('express-session');
-
+var util = require('./lib/utility.js');
+var bcrypt = require('bcrypt-nodejs');
 // var path = require('path');
 // var Promise = require('bluebird');
 // var cookieParser = require('cookie-parser');
@@ -13,7 +14,7 @@ var mongoose = require('mongoose');
 
 var db = mongoose.connection;
 
-var User = require('./db/User/userModel.js');
+var User = require('./db/User/userModel.js'); 
 
 var port = process.env.PORT || 3000;
 var host = process.env.host || '127.0.0.1';
@@ -31,43 +32,93 @@ app.listen(port, function(){
 app.use(passport.initialize());
 
 
-passport.use(new LocalStrategy(function(username, password, done){
+// passport.use('local-login', new LocalStrategy(function(username, password, done){
+//     User.findOne({username: username}, function(err, user){
+
+//         if (err) {
+//           return done(err);
+//         } 
+//         // if username not in database
+//         if (!user) {
+//           return done(null, false, {message: 'username not found!!!'});
+//         }
+//         // compare both passwords
+//         user.comparePassword(password, function(err, isMatch){
+//             if (err) return done(err);
+//             if (isMatch) {
+//               return done(null, user)
+//             } else {
+//               return done(null, false, {message: "invalid password"});
+//             }
+//         });
+//         //return done(null, user);
+//     });
+// }));
+
+passport.use('local-signup', new LocalStrategy(function(username, password, done){
     User.findOne({username: username}, function(err, user){
 
         if (err) {
           return done(err);
         } 
-        // if username not in database
-        if (!user) {
-          return done(null, false, {message: 'username not found!!!'});
+        // if username in database
+        if (user) {
+          return done(null, false, {message: 'That username is already taken!'});
+        } else { // add user to database
+          var newUser = new User();
+          newUser.username = username;
+          newUser.password = password;
+          
+          newUser.save(function(err){
+            if (err) throw err;
+            return done(null, newUser);
+          });
+
         }
-        // compare both passwords
-        user.comparePassword(password, function(err, isMatch){
-            if (err) return done(err);
-            if (isMatch) {
-              return done(null, user)
-            } else {
-              return done(null, false, {message: "invalid password"});
-            }
-        });
     });
 }));
 
-app.get('/', function(req, res){
-  console.log('hello');
-  res.sendFile(__dirname + '/test.html');
+
+// SET UP OUR ROUTES!
+
+// serve up login page after hitting /login
+// app.get('/login', function(req, res){
+//   console.log('hello');
+//   res.sendFile(__dirname + '/login.html');
+//   //res.render('test');
+// });
+
+// app.post('/login', passport.authenticate('local-login', {
+//   successRedirect: '/home',
+//   failureRedirect: '/login'
+
+// }));
+
+// serve up /signup after hitting /signup
+app.get('/signup', function(req, res){
+  res.sendFile(__dirname + '/signup.html');
 });
 
 
+// process the signup form
+app.post('/signup', passport.authenticate('local-signup', {
+  successRedirect: '/home',
+  failureRedirect: '/signup'
+  // check to see if username already exists
 
+  // save to db here
+}));
 
+// check to see if user logged in to view home page
+// app.get('/home', util.isLoggedIn, function(req, res){
+//   res.sendFile(__dirname + '/home.html');
+// });
 
-
-
-
-
-
-
+// serve up /login page after hitting /logout
+// app.get('/logout', function(req, res){
+//   req.logout();
+//   res.redirect('/login');
+// });
 
 
 
