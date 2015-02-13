@@ -6,19 +6,16 @@ var LocalStrategy = require('passport-local').Strategy;
 var session = require('express-session');
 var util = require('./lib/utility.js');
 var bcrypt = require('bcrypt-nodejs');
-// var path = require('path');
-// var Promise = require('bluebird');
-// var cookieParser = require('cookie-parser');
-// var session = require('express-session');
+var cookieParser = require('cookie-parser');
 var mongoose = require('mongoose');
+var User = require('./db/User/userModel.js');
+var UserCtrl = require('./db/User/userController');
 
 var db = mongoose.connection;
 
-var User = require('./db/User/userModel.js'); 
-
 var port = process.env.PORT || 3000;
 var host = process.env.host || '127.0.0.1';
-mongoose.connect('mongodb://' + host + '/peacefulSplinter');
+// mongoose.connect('mongodb://' + host + '/peacefulSplinter');
 
 app.use(express.static(__dirname + '/../client'));
 app.use(bodyParser.json());
@@ -30,7 +27,6 @@ app.listen(port, function(){
 });
 
 app.use(passport.initialize());
-
 
 // passport.use('local-login', new LocalStrategy(function(username, password, done){
 //     User.findOne({username: username}, function(err, user){
@@ -73,11 +69,9 @@ passport.use('local-signup', new LocalStrategy(function(username, password, done
             if (err) throw err;
             return done(null, newUser);
           });
-
         }
     });
 }));
-
 
 // SET UP OUR ROUTES!
 
@@ -99,13 +93,11 @@ app.get('/signup', function(req, res){
   res.sendFile(__dirname + '/signup.html');
 });
 
-
 // process the signup form
 app.post('/signup', passport.authenticate('local-signup', {
   successRedirect: '/home',
   failureRedirect: '/signup'
   // check to see if username already exists
-
   // save to db here
 }));
 
@@ -119,25 +111,6 @@ app.post('/signup', passport.authenticate('local-signup', {
 //   req.logout();
 //   res.redirect('/login');
 // });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // app.get('/', function (req, res) {
 //   res.sendFile(__dirname + '/test.html'); // home page
@@ -185,3 +158,12 @@ app.post('/signup', passport.authenticate('local-signup', {
 
 // });
 
+app.get('/', function (req, res) {
+  res.sendFile(__dirname + '/test.html');
+});
+
+// Testing
+app.post('/', UserCtrl.setCookie);
+app.post('/test', UserCtrl.destroyCookie);
+
+module.exports = passport
