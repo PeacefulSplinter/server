@@ -4,6 +4,7 @@
   "description": "Dashboard as a service",
   "main": "server.js",
   "dependencies": {
+    "bcrypt": "^0.8.1",
     "bcrypt-nodejs": "0.0.3",
     "bluebird": "^2.9.8",
     "body-parser": "^1.11.0",

@@ -5,7 +5,7 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var session = require('express-session');
 var util = require('./lib/utility.js');
-var bcrypt = require('bcrypt-nodejs');
+var bcrypt = require('bcrypt');
 var cookieParser = require('cookie-parser');
 var mongoose = require('mongoose');
 var User = require('./db/User/userModel.js');
@@ -26,7 +26,7 @@ app.get('/', function (req, res) {
   res.sendFile(__dirname + '/test.html');
 });
 
-app.get('/login', UserCtrl.signInUser);
+//app.get('/login', UserCtrl.signInUser);
 app.post('/signup', UserCtrl.signUpUser);
 app.post('/logout', UserCtrl.destroyCookie);
 app.listen(port, function(){
