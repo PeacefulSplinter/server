@@ -1,5 +1,6 @@
 var express = require('express'); 
 var app = express();
+var cors = require('cors');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var User = require('./db/User/userModel.js');
@@ -10,6 +11,7 @@ var host = MONGOLAB_URI || 'mongodb://127.0.0.1/peacefulSplinter';
 
 mongoose.connect(host);
 
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
 // app.use(session({secret: 'shhhh', saveUninitialized: true, resave: true}));
