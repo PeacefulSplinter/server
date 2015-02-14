@@ -14,8 +14,7 @@ exports.setCookie = function (req, res){
 };
 
 exports.destroyCookie = function (req, res){
-	console.log('destroy!');
-	res.clearCookie('u_id'); // Bread and butter, can modify anything else, not this.
+	res.clearCookie('u_id');
 	res.redirect('/');
 };
 
@@ -26,25 +25,20 @@ exports.signUpUser = function (req, res) {
  User.findOne({ username: username }, function (err, user) {
    if (user) {
      console.log('Username already exists');
-     console.log(user);
      res.redirect('/');
    }
    if (!user) {
      bcrypt.genSalt(10, function (err, salt) {
-       console.log('made it thru salt: ' + salt);
        bcrypt.hash(password, salt, function (err, result) {
         if (err) {
           console.log('error: ' + err);
         }; 
-        console.log('made it to results: ' + result);
          var user_data = {
              username: username,
              password: result,
              salt: salt
          };
-         console.log("\n" + user_data.password);
          var newName = new User(user_data);
-         console.log(newName);
          newName.save( function(error, data){
              if(error){
                  console.log('yikes');
@@ -52,7 +46,6 @@ exports.signUpUser = function (req, res) {
              }
              else{
                  console.log('complete!');
-                 console.log(data);
                  res.redirect('/');
              }
          });
@@ -81,13 +74,11 @@ exports.signInUser = function (request, response) {
           };
           bcrypt.compare(hashedPassword, user[0].password, function (err, res){
             if (hashedPassword === user[0].password) {
-              console.log("password correct!!!");
               response.cookie('u_id', user[0]._id);
               response.redirect('/home');
             } else {
-              console.log('compare not working');
-              response.redirect('/');
               console.log('password incorrect');
+              response.redirect('/');
             }
           });
         });
