@@ -7,7 +7,7 @@ var User = require('./db/User/userModel.js');
 var UserCtrl = require('./db/User/userController');
 
 var port = process.env.PORT || 3000;
-var host = MONGOLAB_URI || 'mongodb://127.0.0.1/peacefulSplinter';
+var host = process.env.MONGOLAB_URI || 'mongodb://127.0.0.1/peacefulSplinter';
 
 mongoose.connect(host);
 
