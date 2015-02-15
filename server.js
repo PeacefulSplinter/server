@@ -5,13 +5,14 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var User = require('./db/User/userModel.js');
 var UserCtrl = require('./db/User/userController');
+var options = {origin: true};
 
 var port = process.env.PORT || 3000;
 var host = MONGOLAB_URI || 'mongodb://127.0.0.1/peacefulSplinter';
 
 mongoose.connect(host);
 
-app.use(cors());
+app.use(cors(options));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
 // app.use(session({secret: 'shhhh', saveUninitialized: true, resave: true}));
