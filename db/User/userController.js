@@ -67,11 +67,10 @@ exports.signInUser = function(req, res) {
         bcrypt.compare(hashedPassword, user[0].password, function(err, result) {
           if (hashedPassword === user[0].password) {
             res.cookie('u_id', user[0]._id);
-            res.redirect('/home');
             res.send(200);
           } else {
-            res.redirect('/');
             res.send(200);
+            res.cookie('u_id', 'new cookie!!');
           }
         });
       });
