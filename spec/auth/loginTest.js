@@ -12,15 +12,23 @@ afterEach(function(done){
 })
 
 describe('User authenticate', function(){
-	
+
 	var newUser = new userSchema({username: 'steven', password: 'pazzwordzz'});
 
 	it('should be a schema', function(){
 		expect(userSchema).to.be.a('function');
 	})
 
+	it('should recognize incorrect user', function(){
+		expect(newUser.username).to.equal('steven');
+	})
+
 	it('should create user', function(){
 		expect(newUser.username).to.equal('steven');
+	})
+
+	it('should create password', function(){
+		expect(newUser.username).to.equal('pazzwordzz');
 	})
 
 })

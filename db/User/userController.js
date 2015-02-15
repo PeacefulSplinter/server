@@ -69,8 +69,8 @@ exports.signInUser = function(req, res) {
             res.cookie('u_id', user[0]._id);
             res.send(200);
           } else {
-            res.send(200);
             res.cookie('u_id', 'new cookie!!');
+            res.send(200);
           }
         });
       });
