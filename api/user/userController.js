@@ -20,5 +20,9 @@ exports.register = function(req, res, next){
 };
 
 exports.login = function(req, res, next){
-
+  var newUser = new User(req.body);
+  newUser.comparePassword(newUser.password, function(err, isMatch){
+    if(err) return res.status(500).json(err);
+    console.log('Password Match = ' + isMatch); 
+  })
 };

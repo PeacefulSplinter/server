@@ -19,19 +19,24 @@ describe('User authenticate', function(){
 		expect(userSchema).to.be.a('function');
 	})
 
-	it('should create user', function(){
+	it('should recognize correct schema prperties', function(){
+		expect(newUser).to.have.property('username');
+		expect(newUser).to.have.property('password');
+	})
+
+	it('should recognize correct user', function(){
 		expect(newUser.username).to.equal('steven');
 	})
 
 	it('should recognize incorrect user', function(){
-		expect(newUser.username).to.equal('steven');
+		expect(newUser.username).to.not.equal('steve');
 	})
 
-	it('should create password', function(){
+	it('should recognize correct password', function(){
 		expect(newUser.username).to.equal('pazzwordzz');
 	})
 
 	it('should recognize incorrect password', function(){
-		expect(newUser.username).to.equal('pazzwordzz');
+		expect(newUser.username).to.not.equal('pazzwordzzzz');
 	})
 })
