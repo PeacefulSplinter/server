@@ -14,7 +14,17 @@
     "lodash": "^3.2.0",
     "mongoose": "^3.8.23",
     "passport": "^0.2.1",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "request": "^2.53.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.8.11",
+    "gulp-concat": "^2.4.3",
+    "gulp-jshint": "^1.9.2",
+    "gulp-livereload": "^3.7.0",
+    "gulp-uglify": "^1.1.0",
+    "gulp-util": "^3.0.3",
+    "jshint-stylish": "^1.0.0"
   },
   "devDependencies": {
     "chai": "^2.0.0",
@@ -27,7 +37,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "postinstall": "gulp default"
   },
   "repository": {
     "type": "git",
