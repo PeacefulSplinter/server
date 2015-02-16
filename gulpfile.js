@@ -14,7 +14,7 @@ gulp.task('test', function(){
 			.pipe(mocha({reporter: 'nyan'}))
 			.once('end', function(){
 				process.exit();
-			});
+			}); 
 });
 
 // jshint's api folder
