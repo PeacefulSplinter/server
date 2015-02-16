@@ -10,7 +10,8 @@ gulp.task('test', function(){
 	.once('end', function(){
 		process.exit();
 	})
-})
+});
 
 gulp.task('deploy', shell.task(['git commit -am "push to deployment"', 'git push heroku master']))
+
 

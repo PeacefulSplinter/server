@@ -1,29 +1,38 @@
-var express = require('express'); 
-var app = express();
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+global.$config = require('./config/main');
+global._ = require('lodash');
+
+var express = require('express');
 var cors = require('cors');
-var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-var User = require('./db/User/userModel.js');
-var UserCtrl = require('./db/User/userController');
-var optionObj = {origin: true};
+var bodyParser = require('body-parser');
+var app = express();
 
-var port = process.env.PORT || 3000;
-var host = process.env.MONGOLAB_URI || 'mongodb://127.0.0.1/peacefulSplinter';
+var whitelistUrls = [];
+var optionObj = {
+  origin: function(origin, callback){
+    var originIsWhitelisted = whitelistUrls.indexOf(origin) !== -1;
+    callback(null, originIsWhitelisted);
+  }
 
-mongoose.connect(host);
+if ($config.env === 'development') {
+  whitelistUrls.push('http://localhost:3000');
+}
+if ($config.env === 'production') {
+  whitelistUrls.push($config.productionURL);
+}
+};
 
 
+app.use(cors(optionObj));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-// app.use(session({secret: 'shhhh', saveUninitialized: true, resave: true}));
+mongoose.connect($config.mongo.url);
 
-app.post('/login', UserCtrl.signInUser);
-app.post('/signup', UserCtrl.signUpUser);
-app.post('/logout', UserCtrl.destroyCookie);
-app.options('*', cors(optionObj));
+require('./routes')(app);
 
-app.listen(port, function(){
-  console.log("Listening on " + port);
+app.listen($config.port, function(){
+  console.log("Listening on " + $config.port);
 });
 
-module.exports = app;
+exports = module.exports = app;
