@@ -3,3 +3,4 @@ node_modules
 
 #ignore these files
 .DS_Store
+config/_local.js
