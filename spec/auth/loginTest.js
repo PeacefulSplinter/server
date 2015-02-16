@@ -19,11 +19,11 @@ describe('User authenticate', function(){
 		expect(userSchema).to.be.a('function');
 	})
 
-	it('should recognize incorrect user', function(){
+	it('should create user', function(){
 		expect(newUser.username).to.equal('steven');
 	})
 
-	it('should create user', function(){
+	it('should recognize incorrect user', function(){
 		expect(newUser.username).to.equal('steven');
 	})
 
@@ -31,4 +31,7 @@ describe('User authenticate', function(){
 		expect(newUser.username).to.equal('pazzwordzz');
 	})
 
+	it('should recognize incorrect password', function(){
+		expect(newUser.username).to.equal('pazzwordzz');
+	})
 })
