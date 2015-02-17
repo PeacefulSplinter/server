@@ -1,6 +1,6 @@
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
-global.$config = require('./config/main');
 global._ = require('lodash');
+global.$config = require('./config/main');
 
 var express = require('express');
 var cors = require('cors');
@@ -15,13 +15,13 @@ var optionObj = {
     callback(null, originIsWhitelisted);
   }
 
+};
 if ($config.env === 'development') {
   whitelistUrls.push('http://localhost:3000');
 }
 if ($config.env === 'production') {
   whitelistUrls.push($config.productionURL);
 }
-};
 
 
 app.use(cors(optionObj));

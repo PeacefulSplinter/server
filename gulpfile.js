@@ -4,17 +4,23 @@ var shell = require('gulp-shell');
 var jshint = require('gulp-jshint');
 //var stylish = require('jshint-stylish');
 var paths = {
-	test: ['./spec/**/*.js'],
+	test: ['./api/user/spec/**/*.js'],
 	api: ['./api/**/*.js'],
 	config: ['./config/**/*.js']
 };
+
+function handleError(err) {
+  console.log(err.toString());
+  this.emit('end');
+}
 
 gulp.task('test', function(){
 	return gulp.src(paths.test)
 			.pipe(mocha({reporter: 'nyan'}))
 			.once('end', function(){
 				process.exit();
-			}); 
+			})
+			.on('error', handleError); 
 });
 
 // jshint's api folder
