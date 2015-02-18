@@ -9,29 +9,6 @@ var FacebookSchema = new mongoose.Schema({
   accessToken: {
     type: String
   }
-  // password: {
-  //   type: String
-  //   //required: true
-  // },
-  // accessToken: {
-  //   type: String,
-  //   required: true
-  // },
-  // grants: [
-  //   // list of all api's granted to user
-  // ],
-  // facebook: {
-  //   type: String
-  // },
-  // twitter: {
-  //   type: String
-  // },
-  // mailchimp: {
-  //   type: String
-  // },
-  // twitch: {
-  //   type: String
-  // }
 });
 
 module.exports = mongoose.model('Facebook', FacebookSchema);
