@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-var FacebookSchema = new mongoose.Schema({
+var GoogleSchema = new mongoose.Schema({
   username: {
     type: String,
     required: true,
@@ -34,4 +34,4 @@ var FacebookSchema = new mongoose.Schema({
   // }
 });
 
-module.exports = mongoose.model('Facebook', FacebookSchema);
+module.exports = mongoose.model('Google', GoogleSchema);

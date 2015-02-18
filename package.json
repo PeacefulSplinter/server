@@ -17,6 +17,8 @@
     "mongoose": "^3.8.23",
     "passport": "^0.2.1",
     "passport-facebook": "^1.0.3",
+    "passport-google": "^0.3.0",
+    "passport-google-plus": "^0.5.1",
     "passport-local": "^1.0.0",
     "passport-twitter": "^1.0.2",
     "request": "^2.53.0"
