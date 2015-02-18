@@ -21,7 +21,7 @@ var optionObj = {
   };
 //};
 
-};
+//};
 if ($config.env === 'development') {
   whitelistUrls.push('http://localhost:3000');
 }
