@@ -28,4 +28,10 @@ exports.login = function(req, res, next){
     console.log('testing!!!');
     res.send(200);
   // })
+ var newUser = new User(req.body);
+ newUser.comparePassword(newUser.password, function(err, isMatch){
+   if(err) return res.status(500).json(err);
+   console.log('Password Match = ' + isMatch); 
+ });
 };
+
