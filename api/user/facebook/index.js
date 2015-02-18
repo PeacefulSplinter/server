@@ -6,7 +6,6 @@ var jwt = require('jsonwebtoken');
 var expressToken = require('express-jwt');
 var Facebook = require('./facebookModel');
 var session = require('express-session');
-
 var router = express.Router();
 
 router.use(session({ secret: 'SECRET' }));
@@ -25,7 +24,7 @@ passport.deserializeUser(function(id, done) {
 
 passport.use(new FacebookStrategy({
     clientID: 1454682164794827,
-    clientSecret: 'e9b54e4ab683bf119514795aec23a2b8',
+    clientSecret: "e9b54e4ab683bf119514795aec23a2b8",
     callbackURL: "http://localhost:3000/api/fb/facebook/callback"
   },
 
