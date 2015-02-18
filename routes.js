@@ -1,5 +1,6 @@
 module.exports = function(app){
   //create app.use per new routes
   //will find index.js by default
-  app.use('/api/v1', require('./api/user'));
+  app.use('/api/local', require('./api/user/local'));
+  app.use('/api/fb', require('./api/user/facebook'));
 };

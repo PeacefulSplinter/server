@@ -14,7 +14,8 @@ module.exports = {
   },
   facebook: {
     clientID: process.env.FACEBOOK_ID,
-    clientSecret: process.env.FACEBOOK_SECRET
+    clientSecret: process.env.FACEBOOK_SECRET,
+    callbackUrl: process.env.FACEBOOK_URL
   },
   mailchimp: {
     clientID: process.env.MAILCHIMP_ID,
