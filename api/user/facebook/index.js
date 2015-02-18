@@ -23,17 +23,16 @@ passport.deserializeUser(function(id, done) {
 });
 
 passport.use(new FacebookStrategy({
-    clientID: 1454682164794827,
-    clientSecret: "e9b54e4ab683bf119514795aec23a2b8",
+    clientID: $config.FACEBOOK_ID,
+    clientSecret: $config.FACEBOOK_SECRET,
     callbackURL: "http://localhost:3000/api/fb/facebook/callback"
   },
-
   function(accessToken, refreshToken, profile, done) {
-    var user = Facebook.where({username: profile.displayName});
+    var user = Facebook.where({username: profile.id});
     user.findOne(function(err, user){
       if (err) return done(err);
       if (!user) {
-        var newUser = new Facebook({username: profile.displayName, accessToken: accessToken});
+        var newUser = new Facebook({username: profile.id, accessToken: accessToken});
         newUser.save(function(err, user){
         if (err) { return done(err); }
         });
@@ -47,7 +46,6 @@ router.get('/facebook', passport.authenticate('facebook'), function (req, res) {
 });
 
 router.get('/facebook/callback', passport.authenticate('facebook'), function (req, res) {
-  console.log('User information name: '+ req.user.displayName);
   var token = jwt.sign({foo:'foobar'}, '$config.JWT_SECRET', {expiresInMinutes: 60*5});
   res.status(200).json({token: token});
 });

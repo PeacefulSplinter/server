@@ -1,12 +1,11 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
-var GooglePlusStrategy = require('passport-google-plus');
+var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var jwt = require('jsonwebtoken');
 var expressToken = require('express-jwt');
 var Google = require('./googleModel');
 var session = require('express-session');
-
 var router = express.Router();
 
 router.use(session({ secret: 'SECRET' }));
@@ -23,21 +22,30 @@ passport.deserializeUser(function(id, done) {
   });
 });
 
-passport.use(new GooglePlusStrategy({
-    clientID: '1061316600858-73hm30jeuqe986naemp635ci17qsdgup.apps.googleusercontent.com',
-    clientSecret: 'fG7xnb2nr_kC-IV4zsNXm--u',
-    apiKey: 'AIzaSyCORGPagCLqs9vIQGptbwgRtPwsL1VaGVU'
+passport.use(new GoogleStrategy({
+    clientID: $config.GOOGLE_ID,
+    clientSecret: $config.GOOGLE_SECRET,
+    callbackURL: 'http://localhost:3000/api/g/google/callback'
   },
   function(accessToken, refreshToken, profile, done) {
-  	done(null, profile);
+    var user = Google.where({username: profile.id});
+    user.findOne(function(err, user){
+      if (err) return done(err);
+      if (!user) {
+        var newUser = new Google({username: profile.id, accessToken: accessToken});
+        newUser.save(function(err, user){
+        if (err) { return done(err); }
+        });
+      }
+    });
+    done(null, profile);
   }
 ));
 
-router.get('/google', passport.authenticate('google'), function (req, res) {
+router.get('/google', passport.authenticate('google', {scope: 'https://www.googleapis.com/auth/plus.login'}), function (req, res) {
 });
 
 router.get('/google/callback', passport.authenticate('google'), function (req, res) {
-  console.log('User information name: '+ req.user.displayName);
   var token = jwt.sign({foo:'foobar'}, '$config.JWT_SECRET', {expiresInMinutes: 60*5});
   res.status(200).json({token: token});
 });

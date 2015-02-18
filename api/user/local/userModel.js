@@ -10,20 +10,6 @@ var UserSchema = new mongoose.Schema({
   password: {
     type: String
   }
-
-  // ,
-  // facebook: {
-  //   type: String
-  // },
-  // twitter: {
-  //   type: String
-  // },
-  // mailchimp: {
-  //   type: String
-  // },
-  // twitch: {
-  //   type: String
-  // }
 });
 
 //bcrypt middleware
@@ -54,15 +40,5 @@ UserSchema.methods.comparePassword = function(candidatePassword, cb) {
     cb(null, isMatch);
   });
 };
-
-// UserSchema.methods.authenticate = function(plainText) {
-//     return this.encryptPassword(plainText) === this.hashedPassword;
-// }
-
-// UserSchema.methods.encryptPassword = function(password) {
-//     if (!password || !this.salt) return '';
-//     var salt = new Buffer(this.salt, 'base64');
-//     return crypto.pbkdf2Sync(password, salt, 10000, 64).toString('base64');
-// }
 
 module.exports = mongoose.model('User', UserSchema);
