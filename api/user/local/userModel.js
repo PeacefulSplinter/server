@@ -9,10 +9,7 @@ var UserSchema = new mongoose.Schema({
   },
   password: {
     type: String
-  },
-  grants: [
-    // list of all api's granted to user
-  ]
+  }
 
   // ,
   // facebook: {
