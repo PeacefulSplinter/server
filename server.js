@@ -6,9 +6,6 @@ var express = require('express');
 var cors = require('cors');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
-var passport = require('passport'),
-FacebookStrategy = require('passport-facebook').Strategy;
-
 var app = express();
 
 var whitelistUrls = [];
@@ -32,10 +29,9 @@ if ($config.env === 'production') {
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(passport.initialize());
 
 mongoose.connect($config.mongo.url);
-require('./routes')(app);
+require('./api/auth')(app);
 
 app.listen($config.port, function(){
   console.log("Listening on " + $config.port);
