@@ -35,7 +35,6 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(passport.initialize());
 
 mongoose.connect($config.mongo.url);
-
 require('./routes')(app);
 
 app.listen($config.port, function(){
