@@ -7,6 +7,7 @@ var expressToken = require('express-jwt');
 var Facebook = require('./facebookModel');
 var session = require('express-session');
 var router = express.Router();
+var Grant = require('./../../grant/grantModel');
 
 router.use(session({ secret: 'SECRET' }));
 router.use(passport.initialize());
