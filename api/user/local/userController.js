@@ -21,10 +21,21 @@ exports.register = function(req, res, next){
 
 exports.login = function(req, res, next){
   var newUser = new User(req.body);
-  newUser.comparePassword(newUser.password, function(err, isMatch){
-    if(err) return res.status(500).json('Login Error: ' + err);
-    var token = jwt.sign({_id: user._id}, $config.JWT_SECRET, {expiresInMinutes: 60*5});
-    res.status(200).send({token: token});
-  });
+
+  var currentUser = User.where({username: newUser.username});
+  currentUser.findOne(function(err, user){
+    if(err) return done(err);
+    if(!user) {
+      res.status(404).send({message: newUser.username + ' does not exist'});
+    }
+    currentUser.comparePassword(newUser.password, function(err, isMatch){
+      if(err) return res.status(500).json('Login Error: ' + err);
+      var token = jwt.sign({_id: user._id}, $config.JWT_SECRET, {expiresInMinutes: 60*5});
+      res.status(200).send({token: token});
+    });
+  })
+
+
+
 };
 
