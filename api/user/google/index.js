@@ -24,9 +24,9 @@ passport.deserializeUser(function(id, done) {
 });
 
 passport.use(new GoogleStrategy({
-    clientID: '1061316600858-73hm30jeuqe986naemp635ci17qsdgup.apps.googleusercontent.com',
-    clientSecret: 'fG7xnb2nr_kC-IV4zsNXm--u',
-    callbackURL: 'http://localhost:3000/api/g/google/callback'
+    clientID: $config.google.clientID,
+    clientSecret: $config.google.clientSecret,
+    callbackURL: 'http://spectreswag.herokuapp.com/api/g/google/callback'
   },
   function(accessToken, refreshToken, profile, done) {
     var user = Google.where({username: profile.id});
