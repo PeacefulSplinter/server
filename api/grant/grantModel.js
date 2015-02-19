@@ -2,14 +2,16 @@ var mongoose = require('mongoose');
 
 var grantSchema = new mongoose.Schema({
 
-	userId: {
+	creator: {
 		type: String,
 		unique: true,
 		required: true
 	},
 
-	facebookToken: {
+	username: {
 		type: String,
+		unique: true,
+		required: true
 	},
 
 	twitterToken: {

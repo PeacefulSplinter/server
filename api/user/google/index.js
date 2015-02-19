@@ -6,6 +6,7 @@ var jwt = require('jsonwebtoken');
 var expressToken = require('express-jwt');
 var Google = require('./googleModel');
 var session = require('express-session');
+var Grant = require('./../../grant/grantModel');
 var router = express.Router();
 
 router.use(session({ secret: 'SECRET' }));
@@ -17,14 +18,14 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser(function(id, done) {
-  User.findById(id, function(err, user) {
+  Google.findById(id, function(err, user) {
     done(err, user);
   });
 });
 
 passport.use(new GoogleStrategy({
-    clientID: $config.GOOGLE_ID,
-    clientSecret: $config.GOOGLE_SECRET,
+    clientID: '1061316600858-73hm30jeuqe986naemp635ci17qsdgup.apps.googleusercontent.com',
+    clientSecret: 'fG7xnb2nr_kC-IV4zsNXm--u',
     callbackURL: 'http://localhost:3000/api/g/google/callback'
   },
   function(accessToken, refreshToken, profile, done) {
@@ -34,7 +35,21 @@ passport.use(new GoogleStrategy({
       if (!user) {
         var newUser = new Google({username: profile.id, accessToken: accessToken});
         newUser.save(function(err, user){
-        if (err) { return done(err); }
+          if (err) { return done(err); }
+          var newGrantEntry = new Grant({creator: user._id, username: profile.id});
+          newGrantEntry.save(function(err, user){
+            if(err) { return done(err); }
+          });
+        });
+      }
+      if (user){
+        var grantFinder = Grant.where({username: profile.id});
+        grantFinder.findOne(function(err, user){
+          if(err) return done(err);
+        })
+        var grantEntry = new Grant({facebookToken: accessToken});
+        grantEntry.save(function(err, user){
+          if(err) { return done(err); }
         });
       }
     });

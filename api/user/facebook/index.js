@@ -6,8 +6,8 @@ var jwt = require('jsonwebtoken');
 var expressToken = require('express-jwt');
 var Facebook = require('./facebookModel');
 var session = require('express-session');
-var router = express.Router();
 var Grant = require('./../../grant/grantModel');
+var router = express.Router();
 
 router.use(session({ secret: 'SECRET' }));
 router.use(passport.initialize());
@@ -18,32 +18,33 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser(function(id, done) {
-  User.findById(id, function(err, user) {
+  Facebook.findById(id, function(err, user) {
     done(err, user);
   });
 });
 
 passport.use(new FacebookStrategy({
-    clientID: $config.FACEBOOK_ID,
-    clientSecret: $config.FACEBOOK_SECRET,
-    callbackURL: "http://localhost:3000/api/fb/facebook/callback"
+    clientID: $config.facebook.clientID,
+    clientSecret: $config.facebook.clientSecret,
+    callbackURL: $config.facebook.callbackUrl
   },
   function(accessToken, refreshToken, profile, done) {
     var user = Facebook.where({username: profile.id});
     user.findOne(function(err, user){
       if (err) return done(err);
       if (!user) {
-        var newUser = new Facebook({username: profile.id, accessToken: accessToken});
+        var newUser = new Facebook({username: profile.id});
         newUser.save(function(err, user){
-        if (err) { return done(err); }
+          if (err) { return done(err); }
         });
-      }
-    });
-  	done(null, profile);
+      };
+  	  done(null, profile);
+    })
   }
 ));
 
 router.get('/facebook', passport.authenticate('facebook'), function (req, res) {
+
 });
 
 router.get('/facebook/callback', passport.authenticate('facebook'), function (req, res) {

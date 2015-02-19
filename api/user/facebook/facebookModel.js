@@ -6,8 +6,9 @@ var FacebookSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
-  accessToken: {
-    type: String
+  grants: {
+      type: String, 
+      ref: 'Grant'
   }
 });
 
