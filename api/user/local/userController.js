@@ -26,9 +26,9 @@ exports.login = function(req, res, next){
   currentUser.findOne(function(err, user){
     if(err) return done(err);
     if(!user) {
-      res.status(404).send({message: newUser.username + ' does not exist'});
+      return res.status(404).send({message: newUser.username + ' does not exist'});
     }
-    currentUser.comparePassword(newUser.password, function(err, isMatch){
+    user.comparePassword(newUser.password, function(err, isMatch){
       if(err) return res.status(500).json('Login Error: ' + err);
       var token = jwt.sign({_id: user._id}, $config.JWT_SECRET, {expiresInMinutes: 60*5});
       res.status(200).send({token: token});
