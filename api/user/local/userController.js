@@ -22,8 +22,7 @@ exports.register = function(req, res, next){
 exports.login = function(req, res, next){
   var newUser = new User(req.body);
 
-  var currentUser = User.where({username: newUser.username});
-  currentUser.findOne(function(err, user){
+  User.findOne({username: newUser.username}, function(err, user){
     if(err) return done(err);
     if(!user) {
       return res.status(404).send({message: newUser.username + ' does not exist'});
