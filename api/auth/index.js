@@ -14,6 +14,6 @@
 
   router.use('/local', require('./local'));
   router.use('/fb', require('./facebook'));
-  router.get('/g', require('./google'));
+  router.use('/g', require('./google'));
 
   module.exports = router
