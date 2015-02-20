@@ -1,20 +1,32 @@
 var mongoose = require('mongoose');
-var bcrypt = require('bcrypt-nodejs');
+var bcrypt = require('bcrypt');
 
 var UserSchema = new mongoose.Schema({
   username: {
     type: String,
-    required: true,
     unique: true
   },
+
   password: {
     type: String
+  },
+
+  providers: {
+    facebookID: String,
+    googleID: String
+  },
+  grants: {
+      type: Object, 
+      ref: 'Grant'
   }
 });
 
 //bcrypt middleware
 UserSchema.pre('save', function(next) {
   var user = this;
+  if(!this.password){
+    return next();
+  }
   if(!user.isModified('password')) {
     return next();
   };

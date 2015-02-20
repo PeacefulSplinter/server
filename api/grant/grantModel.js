@@ -1,23 +1,42 @@
 var mongoose = require('mongoose');
-var User = require('./userModel.js');
-var Integration = require('./integrationModel.js');
-
 
 var grantSchema = new mongoose.Schema({
 
-	accessToken: String,
-	integration: {
-		type: Schema.Types.ObjectId,
-		ref: 'Integration'
+	creator: {
+		type: String,
+		unique: true,
+		required: true
 	},
-	user: {
-		type: Schema.Types.ObjectId,
-		ref: 'User'
+
+	username: {
+		type: String,
+		unique: true,
+		required: true
+	},
+
+	twitterToken: {
+		type: String,
+	},
+
+	instagramToken: {
+		type: String,
+	},
+
+	mailchimpToken: {
+		type: String,
+	},
+
+	twitchToken: {
+		type: String,
+	},
+
+	googleToken: {
+		type: String
 	}
 
 });
 
-var Grant = mongoose.model('Grant', grantSchema);
+module.exports = mongoose.model('Grant', grantSchema);
 
 
 
