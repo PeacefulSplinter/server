@@ -3,7 +3,9 @@ var passport = require('passport');
 var jwt = require('jsonwebtoken');
 var router = express.Router();
 
-router.get('/facebook', passport.authenticate('facebook'));
+router.get('/facebook', passport.authenticate('facebook'), function(){
+  
+});
 
 router.get('/facebook/callback', passport.authenticate('facebook'), function (req, res) {
   res.sendFile(__dirname + '../../../test.html', function(err){

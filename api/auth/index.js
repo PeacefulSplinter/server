@@ -1,7 +1,6 @@
 
   //create app.use per new routes
   //will find index.js by default
-  'use strict';
 
   var express = require('express');
   var passport = require('passport');
