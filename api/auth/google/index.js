@@ -7,5 +7,5 @@ router.get('/google', passport.authenticate('google'));
 
 router.get('/google/callback', passport.authenticate('google'), function (req, res) {
 });
-
+ 
 module.exports = router;
