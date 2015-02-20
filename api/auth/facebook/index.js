@@ -3,19 +3,16 @@ var passport = require('passport');
 var jwt = require('jsonwebtoken');
 var router = express.Router();
 
-router.get('/facebook', passport.authenticate('facebook'), function (req, res){
+router.get('/facebook', passport.authenticate('facebook'));
+
+router.get('/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/auth/fb/facebook/facebookFailure'}), function (req, res){
+	res.status(200).send({msg: 'success!'});
 });
 
-router.get('/facebook/callback', function (req, res){
-	res.redirect('/facebook/complete');
+router.get('/facebook/facebookFailure', function (req, res){
+	res.status(200).send({msg: 'failure!'});
 });
 
-router.get('/facebook/complete', function (req, res){
-	res.status(200).send({msg: 'Guess we fixed it?'});
-	passport.authenticate('facebook', function (err, user, info){
-		if(err) {return next(err)}
-	})(req, res, next);
-})
 
 module.exports = router;
 
