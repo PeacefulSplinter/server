@@ -31,7 +31,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 mongoose.connect($config.mongo.url);
-require(__dirname + '/api/auth/index.js')(app);
+require('api/auth')(app);
 
 app.listen($config.port, function(){
   console.log("Listening on " + $config.port);
