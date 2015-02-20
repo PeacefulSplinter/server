@@ -7,14 +7,12 @@ var cors = require('cors');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var app = express();
-
 var whitelistUrls = [];
 var optionObj = {
   origin: function(origin, callback){
 	    var originIsWhitelisted = whitelistUrls.indexOf(origin) !== -1;
 	    callback(null, originIsWhitelisted);
   	}
-
   };
   
 if ($config.env === 'development') {
@@ -31,7 +29,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 mongoose.connect($config.mongo.url);
-require('./api/auth')(app);
+require('./api')(app);
 
 app.listen($config.port, function(){
   console.log("Listening on " + $config.port);
