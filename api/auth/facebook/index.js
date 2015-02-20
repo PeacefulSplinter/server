@@ -6,13 +6,16 @@ var router = express.Router();
 router.get('/facebook', passport.authenticate('facebook'), function (req, res){
 });
 
-router.get('/facebook/callback', function (req, res, next){
-	console.log('test')
-	res.send('we in this!');
+router.get('/facebook/callback', function (req, res){
+	res.redirect('/facebook/complete');
+});
+
+router.get('/facebook/complete', function (req, res){
+	res.status(200).send({msg: 'Guess we fixed it?'});
 	passport.authenticate('facebook', function (err, user, info){
 		if(err) {return next(err)}
 	})(req, res, next);
-});
+})
 
 module.exports = router;
 
