@@ -5,7 +5,7 @@ exports.setup = function (User){
   passport.use(new GoogleStrategy({
       clientID: $config.google.clientID,
       clientSecret: $config.google.clientSecret,
-      callbackURL: 'http://spectreswag.herokuapp.com/api/g/google/callback'
+      callbackURL: 'http://spectreswag.herokuapp.com/auth/g/google/callback'
     },
     function(accessToken, refreshToken, profile, done) {
       var user = Google.where({username: profile.id});
