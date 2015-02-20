@@ -6,13 +6,12 @@ var router = express.Router();
 router.get('/facebook', passport.authenticate('facebook'));
 
 router.get('/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/auth/fb/facebook/facebookFailure'}), function (req, res){
-	res.status(200).send({msg: 'success!'});
+	res.render(__dirname + '../../../test.html');
 });
 
 router.get('/facebook/facebookFailure', function (req, res){
-	res.status(200).send({msg: 'failure!'});
+	res.render(__dirname + '../../../test.html');
 });
-
 
 module.exports = router;
 
