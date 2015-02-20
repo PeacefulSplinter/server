@@ -11,7 +11,7 @@ exports.setup = function (User){
       User.findOne({providers.googleID: profile.id}, function(err, user){
         if (err) return done(err);
         if (!user) {
-          var newUser = new User({providers.googleID: profile.id});
+          var newUser = new User({'providers.googleID': profile.id});
           newUser.save(function(err, user){
             if (err) { return done(err); }
             var newGrantEntry = new Grant({creator: user._id, googleToken: accessToken});
