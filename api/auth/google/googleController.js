@@ -8,7 +8,7 @@ exports.setup = function (User){
       callbackURL: 'http://spectreswag.herokuapp.com/auth/g/google/callback'
     },
     function(accessToken, refreshToken, profile, done) {
-      User.findOne({providers.googleID: profile.id}, function(err, user){
+      User.findOne({username: profile.id}, function(err, user){
         if (err) return done(err);
         if (!user) {
           var newUser = new User({username: profile.id});
