@@ -6,10 +6,10 @@ var router = express.Router();
 router.get('/facebook', passport.authenticate('facebook'), function (req, res){
 });
 
-router.get('/facebook/callback', function(req, res, next){
+router.get('/facebook/callback', function (req, res, next){
 	console.log('test')
 	res.send('we in this!');
-	passport.authenticate('facebook', function(err, user, info){
+	passport.authenticate('facebook', function (err, user, info){
 		if(err) {return next(err)}
 	})(req, res, next);
 });
