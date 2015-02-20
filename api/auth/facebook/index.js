@@ -16,9 +16,11 @@ passport.deserializeUser(function(id, done) {
 router.get('/facebook', passport.authenticate('facebook'));
 
 router.get('/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/auth/fb/facebook/facebookFailure'}), function (req, res){
+	res.status(200).json({msg: 'got it'});
 });
 
 router.get('/facebook/facebookFailure', function (req, res){
+	res.status(200).json({msg: 'failed'});
 });
 
 module.exports = router;
