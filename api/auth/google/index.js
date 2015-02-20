@@ -9,4 +9,4 @@ router.get('/google', passport.authenticate('google', {scope: 'https://www.googl
 router.get('/google/callback', passport.authenticate('google'), function (req, res) {
 });
 
-module.exports = router;
+module.exports = router; 
