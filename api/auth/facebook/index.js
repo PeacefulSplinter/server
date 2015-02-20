@@ -4,17 +4,14 @@ var jwt = require('jsonwebtoken');
 var router = express.Router();
 
 router.get('/facebook', passport.authenticate('facebook'), function (req, res){
-	res.status(200).send({msg: 'Yoloswag360360quickscopedropshotheadshot'});
 });
 
-router.get('/facebook/callback', passport.authenticate('facebook'), function (req, res) {
-  res.sendFile(__dirname + '../../../test.html', function(err){
-    if(err) {
-      res.status(err.status).end();
-    }
-    var token = jwt.sign({foo:'foobar'}, $config.JWT_SECRET, {expiresInMinutes: 60*5});
-    res.status(200).json({token: token}).end();
-  });
+router.get('/facebook/callback', function(req, res, next){
+	passport.authenticate('facebook', function(err, user, info){
+		if(err) {return next(err)}
+		console.log('test!');
+		res.send('we in this!');
+	})(req, res, next);
 });
 
 module.exports = router;
