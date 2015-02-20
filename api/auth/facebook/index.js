@@ -4,7 +4,6 @@ var jwt = require('jsonwebtoken');
 var router = express.Router();
 
 router.get('/facebook', passport.authenticate('facebook'), function (req, res){
-
 });
 
 router.get('/facebook/callback', passport.authenticate('facebook'), function (req, res) {
