@@ -37,7 +37,7 @@ gulp.task('jshint-config', function(){
 		.pipe(jshint.reporter('jshint-stylish'));
 });
 
-gulp.task('deploy', shell.task(['git commit -am "push to deployment"', 'git push heroku master']));
+gulp.task('deploy', shell.task(['git add --all', 'git commit -m "push to deployment"', 'git push heroku master']));
 
 gulp.task('default', ['jshint-api', 'jshint-config']);
 
